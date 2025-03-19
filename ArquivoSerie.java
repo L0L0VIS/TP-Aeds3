@@ -1,61 +1,61 @@
-import Entidades.Serie;
+import entidades.Serie;
 import aed3.*;
 
 public class ArquivoSerie extends aed3.Arquivo<Serie> 
 {
 
-    Arquivo<Serie> arqClientes;
-    HashExtensivel<ParCPFID> indiceIndiretoCPF;
+    Arquivo<Serie> arqSeries;
+    HashExtensivel<ParNomeID> indiceIndiretoNome;
 
-    public ArquivoCliente() throws Exception {
-        super("clientes", Cliente.class.getConstructor());
-        indiceIndiretoCPF = new HashExtensivel<>(
-            ParCPFID.class.getConstructor(), 
+    public ArquivoSerie() throws Exception {
+        super("series", Serie.class.getConstructor());
+        indiceIndiretoNome = new HashExtensivel<>(
+            ParNomeID.class.getConstructor(), 
             4, 
-            ".\\dados\\clientes\\indiceCPF.d.db",   // diretório
-            ".\\dados\\clientes\\indiceCPF.c.db"    // cestos 
+            ".\\dados\\series\\indiceNome.d.db",   // diretório
+            ".\\dados\\series\\indiceNome.c.db"    // cestos 
         );
     }
 
     @Override
-    public int create(Cliente c) throws Exception {
+    public int create(Serie c) throws Exception {
         int id = super.create(c);
-        indiceIndiretoCPF.create(new ParCPFID(c.getCpf(), id));
+        indiceIndiretoNome.create(new ParNomeID(c.getNome(), id));
         return id;
     }
 
-    public Cliente read(String cpf) throws Exception {
-        ParCPFID pci = indiceIndiretoCPF.read(ParCPFID.hash(cpf));
-        if(pci == null)
+    public Serie read(String nome) throws Exception {
+        ParNomeID pni = indiceIndiretoNome.read(ParNomeID.hash(nome));
+        if(pni == null)
             return null;
-        return read(pci.getId());
+        return read(pni.getId());
     }
     
-    public boolean delete(String cpf) throws Exception {
-        ParCPFID pci = indiceIndiretoCPF.read(ParCPFID.hash(cpf));
-        if(pci != null) 
-            if(delete(pci.getId())) 
-                return indiceIndiretoCPF.delete(ParCPFID.hash(cpf));
+    public boolean delete(String nome) throws Exception {
+        ParNomeID pni = indiceIndiretoNome.read(ParNomeID.hash(nome));
+        if(pni != null) 
+            if(delete(pni.getId())) 
+                return indiceIndiretoNome.delete(ParNomeID.hash(nome));
         return false;
     }
 
     @Override
     public boolean delete(int id) throws Exception {
-        Cliente c = super.read(id);
+        Serie c = super.read(id);
         if(c != null) {
             if(super.delete(id))
-                return indiceIndiretoCPF.delete(ParCPFID.hash(c.getCpf()));
+                return indiceIndiretoNome.delete(ParNomeID.hash(c.getNome()));
         }
         return false;
     }
 
     @Override
-    public boolean update(Cliente novoCliente) throws Exception {
-        Cliente clienteVelho = read(novoCliente.getCpf());
-        if(super.update(novoCliente)) {
-            if(novoCliente.getCpf().compareTo(clienteVelho.getCpf())!=0) {
-                indiceIndiretoCPF.delete(ParCPFID.hash(clienteVelho.getCpf()));
-                indiceIndiretoCPF.create(new ParCPFID(novoCliente.getCpf(), novoCliente.getId()));
+    public boolean update(Serie novaSerie) throws Exception {
+        Serie serieVelha = read(novaSerie.getNome());
+        if(super.update(novaSerie)) {
+            if(novaSerie.getNome().compareTo(serieVelha.getNome())!=0) {
+                indiceIndiretoNome.delete(ParNomeID.hash(serieVelha.getNome()));
+                indiceIndiretoNome.create(new ParNomeID(novaSerie.getNome(), novaSerie.getId()));
             }
             return true;
         }
