@@ -1,12 +1,11 @@
-
+package entidades;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-//public class Episodio implements RegistroHashExtensivel<Episodio> {
-    public class Episodio {
+public class Episodio implements aed3.Registro {
 
     // Variáveis
     private int id;         // Chave
