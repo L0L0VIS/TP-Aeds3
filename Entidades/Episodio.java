@@ -6,18 +6,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-//public class Episodio implements RegistroHashExtensivel<Episodio> {
-    public class Episodio {
+    public class Episodio implements aed3.Registro  {
 
     // Variáveis
-    private int id;         // Chave
-    private int id_serie;   // Chave da série
-    private String nome;    // Nome do episódio
+    private int id;                 // Chave
+    private int id_serie;           // Chave da série
+    private String nome;            // Nome do episódio
     private short temporada;        // Temporada da série do episódio
-    private int data_lancamento; // Data de lancamento (dia, mês e ano)
-    private short duracao;   // Duração em minutos do episódio
-    
-    private final short TAMANHO_TOTAL = 46;    // Tamanho em bytes do registro
+    private int data_lancamento;    // Data de lancamento (dia, mês e ano)
+    private short duracao;          // Duração em minutos do episódio
 
     /* Constutores */
     public Episodio() {
@@ -32,6 +29,15 @@ import java.io.IOException;
         this.data_lancamento = data_lancamento;
         this.duracao = duracao;
     }
+
+    public Episodio(int id_serie, String nome, short temporada, int data_lancamento, short duracao) {
+        this.id_serie = id_serie;
+        this.nome = nome;
+        this.temporada = temporada;
+        this.data_lancamento = data_lancamento;
+        this.duracao = duracao;
+    }
+
     /* */
 
     /* Gets */
@@ -41,6 +47,10 @@ import java.io.IOException;
 
     public int getId_Serie() {
         return this.id_serie;
+    }
+
+    public String getNome() {
+        return this.nome;
     }
 
     public short getTemporada() {
@@ -56,13 +66,35 @@ import java.io.IOException;
     }
     /* */
 
+    /* Sets */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setId_serie(int id_serie) {
+        this.id_serie = id_serie;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setTemporada(short temporada) {
+        this.temporada = temporada;
+    }
+
+    public void setData_lancamento(int data_lancamento) {
+        this.data_lancamento = data_lancamento;
+    }
+
+    public void setDuracao(short duracao) {
+        this.duracao = duracao;
+    }
+    /* */
+
     @Override
     public int hashCode() {
         return this.id;
-    }
-
-    public short size() {
-        return this.TAMANHO_TOTAL;
     }
 
     public byte[] toByteArray() throws IOException {
@@ -91,7 +123,7 @@ import java.io.IOException;
     // Print
     public String toString() {
         return "(" + this.id + ";" + this.id_serie + ";" + this.nome + ";" +
-        this.temporada + ";" + this.data_lancamento + ";" + this.duracao + ")";
+                this.temporada + ";" + this.data_lancamento + ";" + this.duracao + ")";
     }
 
 }

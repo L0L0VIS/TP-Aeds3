@@ -9,10 +9,10 @@ public class Serie implements aed3.Registro
 {
 
     // Variáveis
-    private int id;         // Chave
-    private String nome;    // Nome da série
-    private int ano;        // Ano de lançamento
-    private String sinopse; // Sinopse da série
+    private int id;             // Chave
+    private String nome;        // Nome da série
+    private int ano;            // Ano de lançamento
+    private String sinopse;     // Sinopse da série
     private String streaming;   // Plataforma de Streaming
     
     /* Constutores */
@@ -40,36 +40,39 @@ public class Serie implements aed3.Registro
     public int getId() {
         return this.id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return this.nome;
-    }
-
-    public void setNome(String novo) {
-        this.nome = novo;
     }
 
     public int getAno() {
         return this.ano;
     }
 
-    public void setAno(int novo){
-        this.ano = novo;
-    }
-
     public String getSinopse() {
         return this.sinopse;
     }
 
-    public void setSinopse(String nova) {
-        this.sinopse = nova;
-    }
-
     public String getStreaming() {
         return this.streaming;
+    }
+    /* */
+
+    /* Sets */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNome(String novo) {
+        this.nome = novo;
+    }
+
+    public void setAno(int novo){
+        this.ano = novo;
+    }
+
+    public void setSinopse(String nova) {
+        this.sinopse = nova;
     }
 
     public void setStreaming(String nova)
@@ -110,8 +113,8 @@ public class Serie implements aed3.Registro
 
     // Print
     public String toString() {
-        return "("+this.id + ";" + this.nome + ";" + this.ano + ";" +
-        this.sinopse + ";" + this.streaming + ")";
+        return "(" + this.id + ";" + this.nome + ";" + this.ano + ";" +
+                this.sinopse + ";" + this.streaming + ")";
     }
 
 }
