@@ -163,33 +163,27 @@ public class MenuSeries
     public void alterarSerie() 
     {
         System.out.println("\nAlteraçao de Serie");
-        String Nome;
-        boolean NomeValido = false;
+        String nome;
+        boolean nomeValido = false;
 
         do 
         {
             System.out.print("\nNome: ");
-            Nome = console.nextLine();  // Lê o Nome digitado pelo usuário
+            nome = console.nextLine();  // Lê o nome digitado pelo usuário
 
-            if(Nome.isEmpty())
-                return; 
-
-            // Validação do Nome (11 dígitos e composto apenas por números)
-            if (Nome.length() < 2) 
-            {
-                NomeValido = true;  // Nome válido
-            } 
-            else 
-            {
-                System.out.println("Nome inválido. O Nome deve conter mais de 2 dígitos.");
+            if(nome.isEmpty()) {
+                return;
             }
-        } while (!NomeValido);
+            else {
+                nomeValido = true;
+            }
+        } while (!nomeValido);
 
 
         try 
         {
             // Tenta ler o Série com o ID fornecido
-            Serie Serie = arqSeries.read(Nome);
+            Serie Serie = arqSeries.read(nome);
 
             if (Serie != null) 
             {
