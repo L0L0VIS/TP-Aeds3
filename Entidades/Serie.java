@@ -41,7 +41,7 @@ public class Serie implements aed3.Registro
         return this.id;
     }
     public void setId(int id) {
-        id = this.id;
+        this.id = id;
     }
 
     public String getNome() {
@@ -49,7 +49,7 @@ public class Serie implements aed3.Registro
     }
 
     public void setNome(String novo) {
-        nome = novo;
+        this.nome = novo;
     }
 
     public int getAno() {
@@ -57,7 +57,7 @@ public class Serie implements aed3.Registro
     }
 
     public void setAno(int novo){
-        ano = novo;
+        this.ano = novo;
     }
 
     public String getSinopse() {
@@ -65,7 +65,7 @@ public class Serie implements aed3.Registro
     }
 
     public void setSinopse(String nova) {
-        sinopse = nova;
+        this.sinopse = nova;
     }
 
     public String getStreaming() {
@@ -74,7 +74,7 @@ public class Serie implements aed3.Registro
 
     public void setStreaming(String nova)
     {
-        streaming = nova;
+        this.streaming = nova;
     }
     /* */
 

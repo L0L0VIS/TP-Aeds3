@@ -75,14 +75,17 @@ public class Arquivo<T extends Registro> {
 
         ParIDEndereco pid = indiceDireto.read(id);
         if(pid!=null) {
+            //System.out.println("ParIDEndereço not null");
             arquivo.seek(pid.getEndereco());
             obj = construtor.newInstance();
             lapide = arquivo.readByte();
-            if(lapide==' ') {
+            if(lapide == ' ') {
+                //System.out.println("Not deleted");
                 tam = arquivo.readShort();
                 b = new byte[tam];
                 arquivo.read(b);
                 obj.fromByteArray(b);
+                //System.out.println(obj.toString());
                 if(obj.getId()==id)
                     return obj;
             }
