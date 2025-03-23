@@ -155,6 +155,7 @@ public class MenuSeries
             catch(Exception e) 
             {
                 System.out.println("Erro do sistema. Não foi possível incluir o Serie!");
+                System.err.println(e);
             }
         }
     }

@@ -43,10 +43,14 @@ public class ParIDEndereco implements aed3.RegistroHashExtensivel<ParIDEndereco>
     }
 
     public byte[] toByteArray() throws IOException {
+        //System.out.println("ParIDEndereco toByteArray being formed");
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
         dos.writeInt(this.id);
         dos.writeLong(this.endereco);
+
+        //System.out.println("ParIDEndereco toByteArray formed");
         return baos.toByteArray();
     }
 

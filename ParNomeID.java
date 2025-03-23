@@ -8,7 +8,7 @@ public class ParNomeID implements aed3.RegistroHashExtensivel<ParNomeID> {
     
     private String nome; // chave
     private int id;     // valor
-    private final short TAMANHO = 15;  // tamanho em bytes
+    private final short TAMANHO = 44;  // tamanho em bytes
 
     public ParNomeID() {
         this.nome = "serie generica";
@@ -31,7 +31,7 @@ public class ParNomeID implements aed3.RegistroHashExtensivel<ParNomeID> {
  
     @Override
     public int hashCode() {
-        return hash(this.nome);
+        return Math.abs(this.nome.hashCode());
     }
 
     public short size() {
@@ -39,36 +39,45 @@ public class ParNomeID implements aed3.RegistroHashExtensivel<ParNomeID> {
     }
 
     public String toString() {
-        return "("+this.nome + ";" + this.id+")";
+        return "(" + this.nome + ";" + this.id + ")";
     }
 
     public byte[] toByteArray() throws IOException {
+        //System.out.println("ParNomeID toByteArray being formed");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
-        dos.write(this.nome.getBytes());
+
+        dos.writeUTF(this.nome);
         dos.writeInt(this.id);
-        return baos.toByteArray();
+
+        byte[] bs = baos.toByteArray();
+        byte[] bs2 = new byte[this.TAMANHO];
+
+        for (int i = 0; i < this.TAMANHO; i++) {
+            bs2[i] = ' ';
+        }
+
+        for (int i = 0; i < bs.length && i < this.TAMANHO; i++) {
+            //System.out.println(bs[i] + " -> " + bs2[i]);
+            bs2[i] = bs[i];
+        }
+
+        //System.out.println("ParNomeID toByteArray formed");
+
+        return bs2;
     }
 
     public void fromByteArray(byte[] ba) throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(ba);
         DataInputStream dis = new DataInputStream(bais);
-        byte[] b = new byte[11];
-        dis.read(b);
-        this.nome = new String(b);
+
+        this.nome = dis.readUTF();
         this.id = dis.readInt();
     }
 
     public static int hash(String nome) throws IllegalArgumentException 
     {
-        // Converter o nome para um número inteiro longo
-        long nomeLong = Long.parseLong(nome);
-
-        // Aplicar uma função de hash usando um número primo grande
-        int hashValue = (int) (nomeLong % (int)(1e9 + 7));
-
-        // Retornar um valor positivo
-        return Math.abs(hashValue);
+        return Math.abs(nome.hashCode());
     }
 
 

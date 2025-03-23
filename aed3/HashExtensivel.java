@@ -100,6 +100,8 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
 
     // Inserir elementos no cesto
     public boolean create(T elem) {
+      //System.out.println("HashExtensivel creating");
+
       if (full())
         return false;
       int i = quantidade - 1; // posição do último elemento no cesto
@@ -107,6 +109,8 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
         i--;
       elementos.add(i + 1, elem);
       quantidade++;
+      
+      //System.out.println("HashExtensivel created");
       return true;
     }
 

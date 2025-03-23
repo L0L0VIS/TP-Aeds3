@@ -15,8 +15,6 @@ public class Serie implements aed3.Registro
     private String sinopse; // Sinopse da série
     private String streaming;   // Plataforma de Streaming
     
-    private final short TAMANHO_TOTAL = 168;    // Tamanho em bytes do registro
-
     /* Constutores */
     public Serie() {
         this(-1, "", -1, "", "");
@@ -85,11 +83,9 @@ public class Serie implements aed3.Registro
         return this.id;
     }
 
-    public short size() {
-        return this.TAMANHO_TOTAL;
-    }
-
     public byte[] toByteArray() throws IOException {
+        //System.out.println("Serie toByteArray being formed");
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
         dos.writeInt(this.id);
@@ -97,6 +93,8 @@ public class Serie implements aed3.Registro
         dos.writeInt(this.ano);
         dos.writeUTF(this.sinopse);
         dos.writeUTF(this.streaming);
+
+        //System.out.println("Serie toByteArray formed");
         return baos.toByteArray();
     }
 
