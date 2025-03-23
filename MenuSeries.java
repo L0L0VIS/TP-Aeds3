@@ -1,15 +1,15 @@
 import java.util.Scanner;
-import Entidades.Serie;
+import entidades.Serie;
 
-public class MenuSéries 
+public class MenuSeries 
 {
     
-    ArquivoSerie arqSéries;
+    ArquivoSerie arqSeries;
     private static Scanner console = new Scanner(System.in);
 
-    public MenuSéries() throws Exception 
+    public MenuSeries() throws Exception 
     {
-        arqSéries = new ArquivoSerie();
+        arqSeries = new ArquivoSerie();
     }
 
     public void menu() 
@@ -21,7 +21,7 @@ public class MenuSéries
 
             System.out.println("\nPUCFlix 1.0");
             System.out.println("-----------");
-            System.out.println("> Início > Séries");
+            System.out.println("> Início > Series");
             System.out.println("\n1) Incluir");
             System.out.println("2) Buscar");
             System.out.println("3) Alterar");
@@ -41,16 +41,16 @@ public class MenuSéries
             switch (opcao) 
             {
                 case 1:
-                    incluirSérie();
+                    incluirSerie();
                     break;
                 case 2:
-                    buscarSérie();
+                    buscarSerie();
                     break;
                 case 3:
-                    alterarSérie();
+                    alterarSerie();
                     break;
                 case 4:
-                    excluirSérie();
+                    excluirSerie();
                     break;
                 case 0:
                     break;
@@ -63,9 +63,9 @@ public class MenuSéries
     }
 
 
-    public void buscarSérie() 
+    public void buscarSerie() 
     {
-        System.out.println("\nBusca de Série");
+        System.out.println("\nBusca de Serie");
         String nome;
 
         System.out.print("\nNome da Serie: ");
@@ -79,27 +79,27 @@ public class MenuSéries
 
         try 
         {
-            Serie Série = arqSéries.read(nome);  // Chama o método de leitura da classe Arquivo
-            if (Série != null) 
+            Serie Serie = arqSeries.read(nome);  // Chama o método de leitura da classe Arquivo
+            if (Serie != null) 
             {
-                mostraSérie(Série);  // Exibe os detalhes do Série encontrado
+                mostraSerie(Serie);  // Exibe os detalhes da Série encontrada
             } 
             else 
             {
-                System.out.println("Série não encontrado.");
+                System.out.println("Serie não encontrado.");
             }
         } 
         catch(Exception e) 
         {
-            System.out.println("Erro do sistema. Não foi possível buscar o Série!");
+            System.out.println("Erro do sistema. Não foi possível buscar o Serie!");
             e.printStackTrace();
         }
     }   
 
 
-    public void incluirSérie() 
+    public void incluirSerie() 
     {
-        System.out.println("\nInclusão de Série");
+        System.out.println("\nInclusão de Serie");
         String nome = "";
         String sinopse = "";
         int ano = 0;
@@ -142,26 +142,26 @@ public class MenuSéries
             streaming = console.nextLine();
         } while(streaming.length()==0);
 
-        System.out.print("\nConfirma a inclusão da Série? (S/N) ");
+        System.out.print("\nConfirma a inclusão da Serie? (S/N) ");
         char resp = console.nextLine().charAt(0);
         if(resp=='S' || resp=='s') 
         {
             try 
             {
                 Serie c = new Serie(nome, ano, sinopse, streaming);
-                arqSéries.create(c);
-                System.out.println("Série incluída com sucesso.");
+                arqSeries.create(c);
+                System.out.println("Serie incluída com sucesso.");
             } 
             catch(Exception e) 
             {
-                System.out.println("Erro do sistema. Não foi possível incluir o Série!");
+                System.out.println("Erro do sistema. Não foi possível incluir o Serie!");
             }
         }
     }
 
-    public void alterarSérie() 
+    public void alterarSerie() 
     {
-        System.out.println("\nAlteração de Série");
+        System.out.println("\nAlteração de Serie");
         String Nome;
         boolean NomeValido = false;
 
@@ -188,12 +188,12 @@ public class MenuSéries
         try 
         {
             // Tenta ler o Série com o ID fornecido
-            Serie Série = arqSéries.read(Nome);
+            Serie Serie = arqSeries.read(Nome);
 
-            if (Série != null) 
+            if (Serie != null) 
             {
-                System.out.println("Série encontrada:");
-                mostraSérie(Série);  // Exibe os dados do Série para confirmação
+                System.out.println("Serie encontrada:");
+                mostraSerie(Serie);  // Exibe os dados do Série para confirmação
 
                 // Alteração de nome
                 System.out.print("\nNovo nome (deixe em branco para manter o anterior): ");
@@ -201,7 +201,7 @@ public class MenuSéries
 
                 if (!novoNome.isEmpty()) 
                 {
-                    Série.setNome(novoNome);  // Atualiza o nome se fornecido
+                    Serie.setNome(novoNome);  // Atualiza o nome se fornecido
                 }
 
                 // Alteração de Sinopse
@@ -210,7 +210,7 @@ public class MenuSéries
 
                 if (!novaSinopse.isEmpty()) 
                 {
-                    Série.setSinopse(novaSinopse);  // Atualiza a Sinopse se fornecida
+                    Serie.setSinopse(novaSinopse);  // Atualiza a Sinopse se fornecida
                 }
 
                 // Alteração de Streaming
@@ -219,7 +219,7 @@ public class MenuSéries
 
                 if (!novoStreaming.isEmpty()) 
                 {
-                    Série.setStreaming(novoStreaming);  // Atualiza o Streaming se fornecido
+                    Serie.setStreaming(novoStreaming);  // Atualiza o Streaming se fornecido
                 }
 
                 // Alteração de ano
@@ -230,7 +230,7 @@ public class MenuSéries
                 {
                     try 
                     {
-                        Série.setAno(Integer.parseInt(novoAno));  // Atualiza o ano de lançamento se fornecido
+                        Serie.setAno(Integer.parseInt(novoAno));  // Atualiza o ano de lançamento se fornecido
                     } 
                     catch (NumberFormatException e) 
                     {
@@ -243,28 +243,28 @@ public class MenuSéries
                 char resp = console.next().charAt(0);
                 if (resp == 'S' || resp == 's') {
                     // Salva as alterações no arquivo
-                    boolean alterado = arqSéries.update(Série);
+                    boolean alterado = arqSeries.update(Serie);
                     if (alterado) {
-                        System.out.println("Série alterado com sucesso.");
+                        System.out.println("Serie alterado com sucesso.");
                     } else {
-                        System.out.println("Erro ao alterar o Série.");
+                        System.out.println("Erro ao alterar o Serie.");
                     }
                 } else {
                     System.out.println("Alterações canceladas.");
                 }
             } else {
-                System.out.println("Série não encontrado.");
+                System.out.println("Serie não encontrado.");
             }
         } catch (Exception e) {
-            System.out.println("Erro do sistema. Não foi possível alterar o Série!");
+            System.out.println("Erro do sistema. Não foi possível alterar o Serie!");
             e.printStackTrace();
         }
         
     }
 
 
-    public void excluirSérie() {
-        System.out.println("\nExclusão de Série");
+    public void excluirSerie() {
+        System.out.println("\nExclusão de Serie");
         String nome;
 
         System.out.print("\nnome (Deixar em branco para cancelar): ");
@@ -277,42 +277,42 @@ public class MenuSéries
 
         try {
             // Tenta ler o Série com o ID fornecido
-            Serie Série = arqSéries.read(nome);
-            if (Série != null) {
-                System.out.println("Série encontrado:");
-                mostraSérie(Série);  // Exibe os dados do Série para confirmação
+            Serie Serie = arqSeries.read(nome);
+            if (Serie != null) {
+                System.out.println("Serie encontrado:");
+                mostraSerie(Serie);  // Exibe os dados do Série para confirmação
 
-                System.out.print("\nConfirma a exclusão do Série? (S/N) ");
+                System.out.print("\nConfirma a exclusão do Serie? (S/N) ");
                 char resp = console.next().charAt(0);  // Lê a resposta do usuário
 
                 if (resp == 'S' || resp == 's') {
-                    boolean excluido = arqSéries.delete(nome);  // Chama o método de exclusão no arquivo
+                    boolean excluido = arqSeries.delete(nome);  // Chama o método de exclusão no arquivo
                     if (excluido) {
-                        System.out.println("Série excluído com sucesso.");
+                        System.out.println("Serie excluído com sucesso.");
                     } else {
-                        System.out.println("Erro ao excluir o Série.");
+                        System.out.println("Erro ao excluir o Serie.");
                     }
                 } else {
                     System.out.println("Exclusão cancelada.");
                 }
             } else {
-                System.out.println("Série não encontrado.");
+                System.out.println("Serie não encontrado.");
             }
         } catch (Exception e) {
-            System.out.println("Erro do sistema. Não foi possível excluir o Série!");
+            System.out.println("Erro do sistema. Não foi possível excluir o Serie!");
             e.printStackTrace();
         }
     }
 
 
-    public void mostraSérie(Serie Série) {
-    if (Série != null) {
-        System.out.println("\nDetalhes do Série:");
+    public void mostraSerie(Serie Serie) {
+    if (Serie != null) {
+        System.out.println("\nDetalhes do Serie:");
         System.out.println("----------------------");
-        System.out.printf("Nome......: %s%n", Série.getNome());
-        System.out.printf("Ano de lançamento: %s%n", Série.getAno());
-        System.out.printf("Sinopse.......: %s%n", Série.getSinopse());
-        System.out.printf("Streaming...: %s%n", Série.getStreaming());
+        System.out.printf("Nome......: %s%n", Serie.getNome());
+        System.out.printf("Ano de lançamento: %s%n", Serie.getAno());
+        System.out.printf("Sinopse.......: %s%n", Serie.getSinopse());
+        System.out.printf("Streaming...: %s%n", Serie.getStreaming());
         System.out.println("----------------------");
     }
 }

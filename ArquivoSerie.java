@@ -1,4 +1,4 @@
-import Entidades.Serie;
+import entidades.Serie;
 import aed3.*;
 
 public class ArquivoSerie extends aed3.Arquivo<Serie>

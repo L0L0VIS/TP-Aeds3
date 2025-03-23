@@ -37,7 +37,7 @@ public class Principal
                 switch (opcao) 
                 {
                     case 1:
-                        (new MenuSéries()).menu();
+                        (new MenuSeries()).menu();
                         break;
                     case 0:
                         break;
