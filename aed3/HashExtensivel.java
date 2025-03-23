@@ -130,11 +130,11 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
       }
       int i = 0;
       while (i < quantidade && chave > elementos.get(i).hashCode()) {
-        //System.out.println("While(" + i + "): " + elementos.get(i).toString());
+        //System.out.println("Read_ While(" + i + "): " + elementos.get(i).toString());
         i++;
       }
       if (i < quantidade && chave == elementos.get(i).hashCode()) {
-        //System.out.println("If: " + elementos.get(i).toString());
+        //System.out.println("Read_ If: " + elementos.get(i).toString());
         return elementos.get(i);
       }
       else
@@ -157,12 +157,17 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
 
     // pagar um elemento do cesto
     public boolean delete(int chave) {
-      if (empty())
+      if (empty()) {
+        //System.out.println("HashExtensivel delete: Empty file");
         return false;
+      }
       int i = 0;
-      while (i < quantidade && chave > elementos.get(i).hashCode())
+      while (i < quantidade && chave > elementos.get(i).hashCode()) {
+        //System.out.println("Delete_ While(" + i + "): " + elementos.get(i).toString());
         i++;
+      }
       if (chave == elementos.get(i).hashCode()) {
+        //System.out.println("Delete_ If: " + elementos.get(i).toString());
         elementos.remove(i);
         quantidade--;
         return true;

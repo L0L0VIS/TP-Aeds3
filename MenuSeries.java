@@ -62,45 +62,9 @@ public class MenuSeries
         } while (opcao != 0);
     }
 
-
-    public void buscarSerie() 
-    {
-        System.out.println("\nBusca de Serie");
-        String nome;
-
-        System.out.print("\nNome da Serie: ");
-        nome = console.nextLine();  // Lê o Nome digitado pelo usuário
-
-        if(nome.isEmpty())
-        {
-            return; 
-        }
-
-
-        System.out.println("Buscando " + nome);
-        try 
-        {
-            Serie Serie = arqSeries.read(nome);  // Chama o método de leitura da classe Arquivo
-            if (Serie != null) 
-            {
-                mostraSerie(Serie);  // Exibe os detalhes da Série encontrada
-            } 
-            else 
-            {
-                System.out.println("Serie nao encontrada.");
-            }
-        } 
-        catch(Exception e) 
-        {
-            System.out.println("Erro do sistema. Nao foi possível buscar a Serie!");
-            e.printStackTrace();
-        }
-    }   
-
-
     public void incluirSerie() 
     {
-        System.out.println("\nInclusão de Serie");
+        System.out.println("\nInclusao de Serie");
         String nome = "";
         String sinopse = "";
         int ano = 0;
@@ -160,6 +124,41 @@ public class MenuSeries
             }
         }
     }
+
+
+    public void buscarSerie() 
+    {
+        System.out.println("\nBusca de Serie");
+        String nome;
+
+        System.out.print("\nNome da Serie: ");
+        nome = console.nextLine();  // Lê o Nome digitado pelo usuário
+
+        if(nome.isEmpty())
+        {
+            return; 
+        }
+
+
+        System.out.println("Buscando " + nome);
+        try 
+        {
+            Serie Serie = arqSeries.read(nome);  // Chama o método de leitura da classe Arquivo
+            if (Serie != null) 
+            {
+                mostraSerie(Serie);  // Exibe os detalhes da Série encontrada
+            } 
+            else 
+            {
+                System.out.println("Serie nao encontrada.");
+            }
+        } 
+        catch(Exception e) 
+        {
+            System.out.println("Erro do sistema. Nao foi possível buscar a Serie!");
+            e.printStackTrace();
+        }
+    }   
 
     public void alterarSerie() 
     {

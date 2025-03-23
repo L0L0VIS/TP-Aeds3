@@ -75,7 +75,7 @@ public class Arquivo<T extends Registro> {
 
         ParIDEndereco pid = indiceDireto.read(id);
         if(pid!=null) {
-            //System.out.println("ParIDEndereço not null");
+            //System.out.println("ParIDEndereço (read) not null");
             arquivo.seek(pid.getEndereco());
             obj = construtor.newInstance();
             lapide = arquivo.readByte();
@@ -101,6 +101,7 @@ public class Arquivo<T extends Registro> {
 
         ParIDEndereco pie = indiceDireto.read(id);
         if(pie!=null) {
+            //System.out.println("ParIDEndereço (delete) not null");
             arquivo.seek(pie.getEndereco());
             obj = construtor.newInstance();
             lapide = arquivo.readByte();
@@ -109,6 +110,7 @@ public class Arquivo<T extends Registro> {
                 b = new byte[tam];
                 arquivo.read(b);
                 obj.fromByteArray(b);
+                //System.out.println(obj.toString());
                 if(obj.getId()==id) {
                     if(indiceDireto.delete(id)) {
                         arquivo.seek(pie.getEndereco());

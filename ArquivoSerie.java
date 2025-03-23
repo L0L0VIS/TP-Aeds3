@@ -40,15 +40,19 @@ public class ArquivoSerie extends aed3.Arquivo<Serie>
     
     public boolean delete(String nome) throws Exception {
         ParNomeID pni = indiceIndiretoNome.read(ParNomeID.hash(nome));
+        //System.out.println("PNomeID encontrado para deletar: " + pni.getId() + " " + pni.getnome());
         if(pni != null) 
             if(delete(pni.getId())) 
-                return indiceIndiretoNome.delete(ParNomeID.hash(nome));
+                //return indiceIndiretoNome.delete(ParNomeID.hash(nome));
+                return true;
+                // Antigo return substituído pois era redundante com o outro método delete
         return false;
     }
 
     @Override
     public boolean delete(int id) throws Exception {
         Serie c = super.read(id);
+        //System.out.println("Deleting ParNomeID of id: " + id + " to Serie: " + c.getNome());
         if(c != null) {
             if(super.delete(id))
                 return indiceIndiretoNome.delete(ParNomeID.hash(c.getNome()));
