@@ -23,24 +23,26 @@ public class ArquivoSerie extends aed3.Arquivo<Serie>
         //System.out.println("ArquivoSerie super being formed");
         int id = super.create(c);
         //System.out.println("ArquivoSerie super formed");
+        //System.out.println("Creating ParNomeID of id: " + id + " to Serie: " + c.getNome());
         //System.out.println("ArquivoSerie IndiceIndireto being formed");
         indiceIndiretoNome.create(new ParNomeID(c.getNome(), id));
         //System.out.println("ArquivoSerie IndiceIndireto formed");
         return id;
     }
 
-    public Serie read(String Nome) throws Exception {
-        ParNomeID pci = indiceIndiretoNome.read(ParNomeID.hash(Nome));
-        if(pci == null)
+    public Serie read(String nome) throws Exception {
+        ParNomeID pni = indiceIndiretoNome.read(ParNomeID.hash(nome));
+        //System.out.println("PNomeID encontrado: " + pni.getId() + " " + pni.getnome());
+        if(pni == null)
             return null;
-        return read(pci.getId());
+        return read(pni.getId());
     }
     
-    public boolean delete(String Nome) throws Exception {
-        ParNomeID pci = indiceIndiretoNome.read(ParNomeID.hash(Nome));
-        if(pci != null) 
-            if(delete(pci.getId())) 
-                return indiceIndiretoNome.delete(ParNomeID.hash(Nome));
+    public boolean delete(String nome) throws Exception {
+        ParNomeID pni = indiceIndiretoNome.read(ParNomeID.hash(nome));
+        if(pni != null) 
+            if(delete(pni.getId())) 
+                return indiceIndiretoNome.delete(ParNomeID.hash(nome));
         return false;
     }
 

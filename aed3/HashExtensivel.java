@@ -57,6 +57,7 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
       profundidadeLocal = (byte) pl;
       quantidade = 0;
       quantidadeMaxima = (short) qtdmax;
+      //elementos = new ArrayList<T>(quantidadeMaxima);
       elementos = new ArrayList<>(quantidadeMaxima);
       bytesPorElemento = ct.newInstance().size();
       bytesPorCesto = (short) (bytesPorElemento * quantidadeMaxima + 3);
@@ -104,10 +105,17 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
 
       if (full())
         return false;
-      int i = quantidade - 1; // posição do último elemento no cesto
-      while (i >= 0 && elem.hashCode() < elementos.get(i).hashCode())
+      // Posição do último elemento no cesto
+      int i = quantidade - 1;
+      // int i = quantidade;
+      //System.out.println("HashExtensivel create(" + elem.toString() + "): i initial value: " + i);
+      while (i >= 0 && elem.hashCode() < elementos.get(i).hashCode()) {
+        //System.out.println("i value: " + i);
         i--;
+      }
+      //System.out.println("HashExtensivel: Adicionando elemento de ID: " + (i+1) );
       elementos.add(i + 1, elem);
+      //System.out.println(elementos);
       quantidade++;
       
       //System.out.println("HashExtensivel created");
@@ -116,13 +124,19 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
 
     // Buscar um elemento no cesto
     public T read(int chave) {
-      if (empty())
+      if (empty()) {
+        //System.out.println("HashExtensivel read: Empty file");
         return null;
+      }
       int i = 0;
-      while (i < quantidade && chave > elementos.get(i).hashCode())
+      while (i < quantidade && chave > elementos.get(i).hashCode()) {
+        //System.out.println("While(" + i + "): " + elementos.get(i).toString());
         i++;
-      if (i < quantidade && chave == elementos.get(i).hashCode())
+      }
+      if (i < quantidade && chave == elementos.get(i).hashCode()) {
+        //System.out.println("If: " + elementos.get(i).toString());
         return elementos.get(i);
+      }
       else
         return null;
     }
@@ -306,7 +320,7 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
 
   public boolean create(T elem) throws Exception {
 
-    // Carrega TODO o diretório para a memória
+    // Carrega todo o diretório para a memória
     byte[] bd = new byte[(int) arqDiretorio.length()];
     arqDiretorio.seek(0);
     arqDiretorio.read(bd);

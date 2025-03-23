@@ -22,9 +22,9 @@ public class Principal
                 System.out.println("\n1) Séries");
                 System.out.println("2) Episódios");
                 System.out.println("3) Atores");
-                System.out.println("0 - Sair");
+                System.out.println("0) Sair");
 
-                System.out.print("\nOpção: ");
+                System.out.print("\nOpçao: ");
                 try 
                 {
                     opcao = Integer.valueOf(console.nextLine());
@@ -42,7 +42,7 @@ public class Principal
                     case 0:
                         break;
                     default:
-                        System.out.println("Opção inválida!");
+                        System.out.println("Opçao inválida!");
                         break;
                 }
 

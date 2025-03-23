@@ -64,7 +64,7 @@ public class Arquivo<T extends Registro> {
         indiceDireto.create(new ParIDEndereco(proximoID, endereco));
         
         //System.out.println("Arquivo created");
-        return obj.getId();
+        return proximoID;
     }
     
     public T read(int id) throws Exception {

@@ -31,7 +31,9 @@ public class ParNomeID implements aed3.RegistroHashExtensivel<ParNomeID> {
  
     @Override
     public int hashCode() {
-        return Math.abs(this.nome.hashCode());
+        int result = Math.abs(this.nome.hashCode());
+        //System.out.println("Hashcode of " + nome + " result: " + result);
+        return result;
     }
 
     public short size() {
@@ -77,7 +79,9 @@ public class ParNomeID implements aed3.RegistroHashExtensivel<ParNomeID> {
 
     public static int hash(String nome) throws IllegalArgumentException 
     {
-        return Math.abs(nome.hashCode());
+        int result = Math.abs(nome.hashCode());
+        //System.out.println("Hash of " + nome + " result: " + result);
+        return result;
     }
 
 
