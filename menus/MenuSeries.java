@@ -1,5 +1,10 @@
-import java.util.Scanner;
+//package menus;
+
+
+import arquivos.ArquivoSerie;
 import entidades.Serie;
+
+import java.util.Scanner;
 
 public class MenuSeries 
 {

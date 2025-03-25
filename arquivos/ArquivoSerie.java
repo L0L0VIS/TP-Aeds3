@@ -1,7 +1,11 @@
-import entidades.Serie;
-import aed3.*;
+package arquivos;
 
-public class ArquivoSerie extends aed3.Arquivo<Serie>
+
+import entidades.Serie;
+import entidades.ParNomeID;
+import estruturas.HashExtensivel;
+
+public class ArquivoSerie extends Arquivo<Serie>
 {
 
     Arquivo<Serie> arqSerie;

@@ -1,11 +1,13 @@
 package entidades;
+
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Serie implements aed3.Registro 
+public class Serie implements Registro 
 {
 
     // Variáveis
