@@ -2,7 +2,8 @@ package menus;
 
 
 import arquivos.ArquivoEpisodio;
-import Entidades.Episodio;
+import arquivos.ArquivoSerie;
+import Entidades.*;
 
 import java.util.Scanner;
 
@@ -71,18 +72,50 @@ public class MenuEpisodio
     {
         System.out.println("\nInclusao de Episodio");
         String nome = "";
+        String nomeS = "";
         Short Duração = 0;
         int data = 0;
         Short Temporada = 0;
         boolean dadosCorretos = false;
+        ArquivoSerie arqSerie;
 
+
+        try {
+            arqSerie = new ArquivoSerie();  
+            if (!arqSerie.temSeries()) 
+            {
+                System.out.println("Erro: Nenhuma série cadastrada! Cadastre uma série antes de incluir episódios.");
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao acessar os arquivos de séries.");
+            return;
+        }
+    
+        do {
+            System.out.print("\nNome da serie (vazio para cancelar): ");
+            nomeS = console.nextLine();
+            if (nomeS.isEmpty()) return;
+    
+            try {
+                Serie serie = arqSerie.read(nomeS);
+                if (serie == null) {
+                    System.out.println("Erro: Série não encontrada! Digite um nome válido.");
+                    nomeS = "";
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao buscar série.");
+                return;
+            }
+        } while (nomeS.isEmpty());
         do 
         {
-            System.out.print("\nNome (vazio para cancelar): ");
+            System.out.print("\nNome: ");
             nome = console.nextLine();
             if(nome.length()==0)
                 return;
         } while(nome.length()<1);
+
 
         do 
         {
