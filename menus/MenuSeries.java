@@ -2,7 +2,7 @@ package menus;
 
 
 import arquivos.ArquivoSerie;
-import Entidades.Serie;
+import entidades.Serie;
 
 import java.util.Scanner;
 
@@ -245,7 +245,9 @@ public class MenuSeries
                     // Salva as alterações no arquivo
                     boolean alterado = arqSeries.update(Serie);
                     if (alterado) {
-                        System.out.println("Serie alterado com sucesso.");
+                        System.out.println("Serie alterada com sucesso.");
+                        
+                        nome = console.nextLine(); // Para corrigir um input extra
                     } else {
                         System.out.println("Erro ao alterar o Serie.");
                     }
@@ -259,7 +261,6 @@ public class MenuSeries
             System.out.println("Erro do sistema. Nao foi possível alterar o Serie!");
             e.printStackTrace();
         }
-        
     }
 
 

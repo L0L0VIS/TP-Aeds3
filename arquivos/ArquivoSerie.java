@@ -3,8 +3,8 @@ package arquivos;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import Entidades.Serie;
-import entidade.ParNomeID;
+import entidades.Serie;
+import entidades.ParNomeID;
 import estruturas.HashExtensivel;
 
 public class ArquivoSerie extends Arquivo<Serie> {

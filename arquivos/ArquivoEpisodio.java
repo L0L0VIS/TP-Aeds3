@@ -1,8 +1,8 @@
 package arquivos;
 
 
-import Entidades.Episodio;
-import entidade.ParNomeID;
+import entidades.Episodio;
+import entidades.ParNomeID;
 import estruturas.HashExtensivel;
 
 public class ArquivoEpisodio extends Arquivo<Episodio>

@@ -3,23 +3,66 @@ package menus;
 
 import arquivos.ArquivoEpisodio;
 import arquivos.ArquivoSerie;
-import Entidades.*;
+import entidades.*;
 
 import java.util.Scanner;
+
+import java.time.LocalDate;
+import java.time.format.*;
 
 public class MenuEpisodio
 {
     
+    int id_serie = -1;
+    String nome_serie = "";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
     ArquivoEpisodio arqEpisodio;
+    ArquivoSerie arqSeries;
     private static Scanner console = new Scanner(System.in);
 
     public MenuEpisodio() throws Exception 
     {
         arqEpisodio = new ArquivoEpisodio();
+        arqSeries = new ArquivoSerie();
     }
 
-    public void menu() 
+    public void definir_serie() throws Exception {
+
+        boolean serie_defined = false;
+
+        while (!serie_defined) {
+
+            System.out.print("Digite o nome da serie a ser acessada os episódios: ");
+
+            nome_serie = console.nextLine();
+    
+            while (nome_serie.isEmpty()) {
+                System.out.println("Erro de entrada: Digite novamente");
+                nome_serie = console.nextLine();
+            }
+
+            Serie serie = arqSeries.read(nome_serie);  // Chama o método de leitura da classe Arquivo
+            if (serie != null) 
+            {
+                id_serie = serie.getId();
+                serie_defined = true;
+            } 
+            else 
+            {
+                System.out.println("Serie nao encontrada.");
+            }
+
+        }
+
+
+    }
+
+    public void menu() throws Exception 
     {
+
+        if (id_serie == -1) {
+            definir_serie();
+        }
 
         int opcao;
         do 
@@ -27,11 +70,14 @@ public class MenuEpisodio
 
             System.out.println("\nPUCFlix 1.0");
             System.out.println("-----------");
-            System.out.println("> Início > Episodio");
+            System.out.print  ("> Início > Episodio (");
+            System.out.print  (nome_serie);
+            System.out.println(")");
             System.out.println("\n1) Incluir");
             System.out.println("2) Buscar");
             System.out.println("3) Alterar");
             System.out.println("4) Excluir");
+            System.out.println("5) Redefinir Série");
             System.out.println("0) Voltar");
 
             System.out.print("\nOpçao: ");
@@ -72,42 +118,13 @@ public class MenuEpisodio
     {
         System.out.println("\nInclusao de Episodio");
         String nome = "";
-        String nomeS = "";
         Short Duração = 0;
+        String dataS = "";
+        LocalDate dataLocal;
         int data = 0;
         Short Temporada = 0;
         boolean dadosCorretos = false;
-        ArquivoSerie arqSerie;
 
-
-        try {
-            arqSerie = new ArquivoSerie();  
-            if (!arqSerie.temSeries()) 
-            {
-                System.out.println("Erro: Nenhuma série cadastrada! Cadastre uma série antes de incluir episódios.");
-                return;
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao acessar os arquivos de séries.");
-            return;
-        }
-    
-        do {
-            System.out.print("\nNome da serie (vazio para cancelar): ");
-            nomeS = console.nextLine();
-            if (nomeS.isEmpty()) return;
-    
-            try {
-                Serie serie = arqSerie.read(nomeS);
-                if (serie == null) {
-                    System.out.println("Erro: Série não encontrada! Digite um nome válido.");
-                    nomeS = "";
-                }
-            } catch (Exception e) {
-                System.out.println("Erro ao buscar série.");
-                return;
-            }
-        } while (nomeS.isEmpty());
         do 
         {
             System.out.print("\nNome: ");
@@ -119,39 +136,42 @@ public class MenuEpisodio
 
         do 
         {
-            System.out.print("Duração: ");
+            System.out.print("Duraçao: ");
             Duração = console.nextShort();
         } while(Duração == 0);
 
         do 
         {
             dadosCorretos = false;
-            System.out.print("data de lancamento: ");
-            if (console.hasNextInt()) 
-            {
-                data = console.nextInt();
-                dadosCorretos = true;
-            } 
-            else 
-            {
-                System.err.println("Data! Por favor, insira um número válido.");
-            }
+            System.out.print("Data de lançamento (dd/mm/yyyy): ");
+                
             console.nextLine(); // Limpar o buffer 
+
+            dataS = console.nextLine();
+            dataLocal = LocalDate.parse(dataS, formatter);
+
+            data = (int) dataLocal.toEpochDay();
+            dadosCorretos = true;
+
         } while(!dadosCorretos);
 
         do 
         {
             System.out.print("Temporada: ");
-            Temporada = console.nextShort();
+            Temporada = (short) ( console.nextInt() );
         } while(Temporada == 0);
 
-        System.out.print("\nConfirma a inclusao da Episodio? (S/N) ");
-        char resp = console.nextLine().charAt(0);
+        String respS = console.nextLine();
+
+        System.out.print("\nConfirma a inclusao da Episodio? (S/N): ");
+        respS = console.nextLine();
+        //System.out.println(respS + " - Teste");
+        char resp = respS.charAt(0);
         if(resp=='S' || resp=='s') 
         {
-            try 
+            try
             {
-                Episodio c = new Episodio(0, nome, Temporada, data, Duração);
+                Episodio c = new Episodio(id_serie, nome, Temporada, data, Duração);
                 arqEpisodio.create(c);
                 System.out.println("Episodio incluída com sucesso.");
             } 
@@ -184,7 +204,7 @@ public class MenuEpisodio
             Episodio Episodio = arqEpisodio.read(nome);  // Chama o método de leitura da classe Arquivo
             if (Episodio != null) 
             {
-                mostraEpisodio(Episodio);  // Exibe os detalhes da Série encontrada
+                mostraEpisodio(Episodio);  // Exibe os detalhes do Episódio encontrado
             } 
             else 
             {
@@ -238,7 +258,7 @@ public class MenuEpisodio
                 }
 
                 // Alteração de Duração
-                System.out.print("Nova Duração (deixe em branco para manter a anterior): ");
+                System.out.print("Nova Duraçao (deixe em branco para manter a anterior): ");
                 String novaDuração = console.nextLine();
 
                 if (!novaDuração.isEmpty()) 
@@ -279,6 +299,8 @@ public class MenuEpisodio
                     boolean alterado = arqEpisodio.update(Episodio);
                     if (alterado) {
                         System.out.println("Episodio alterado com sucesso.");
+                        
+                        nome = console.nextLine(); // Para corrigir um input extra
                     } else {
                         System.out.println("Erro ao alterar o Episodio.");
                     }
@@ -322,6 +344,8 @@ public class MenuEpisodio
                     boolean excluido = arqEpisodio.delete(nome);  // Chama o método de exclusão no arquivo
                     if (excluido) {
                         System.out.println("Episodio excluído com sucesso.");
+
+                        nome = console.nextLine(); // Para corrigir um input extra
                     } else {
                         System.out.println("Erro ao excluir o Episodio.");
                     }
@@ -343,9 +367,9 @@ public class MenuEpisodio
         System.out.println("\nDetalhes do Episodio:");
         System.out.println("----------------------");
         System.out.printf("Nome......: %s%n",           Episodio.getNome());
-        System.out.printf("Ano de lançamento: %s%n",    Episodio.getData_lancamento());
-        System.out.printf("Temporada.......: %s%n",       Episodio.getTemporada());
-        System.out.printf("Duração...: %s%n",         Episodio.getDuracao());
+        System.out.printf("Data de lançamento: %s%n",   LocalDate.ofEpochDay((long) Episodio.getData_lancamento()).format(formatter)  );
+        System.out.printf("Temporada.......: %s%n",     Episodio.getTemporada());
+        System.out.printf("Duraçao...: %s%n",           Episodio.getDuracao());
         System.out.println("----------------------");
     }
 }

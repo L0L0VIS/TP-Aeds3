@@ -1,8 +1,8 @@
 package arquivos;
 
 
-import entidade.Registro;
-import entidade.ParIDEndereco;
+import entidades.ParIDEndereco;
+import entidades.Registro;
 import estruturas.HashExtensivel;
 
 import java.io.File;
