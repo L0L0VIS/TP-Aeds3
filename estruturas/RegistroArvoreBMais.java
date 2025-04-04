@@ -1,13 +1,3 @@
-/*
-REGISTRO ÁRVORE B+
-
-Esta interface apresenta os métodos que os objetos
-a serem incluídos na árvore B+ devem 
-conter.
-
-Implementado pelo Prof. Marcos Kutova
-v1.0 - 2021
-*/
 package estruturas;
 
 import java.io.IOException;
