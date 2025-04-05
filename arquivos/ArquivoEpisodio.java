@@ -4,8 +4,8 @@ import java.io.RandomAccessFile;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
-import Entidades.Episodio;
-import entidade.ChaveComposta;
+import entidades.Episodio;
+import entidades.ChaveComposta;
 import estruturas.ArvoreBMais;
 
 public class ArquivoEpisodio extends Arquivo<Episodio> {
@@ -36,6 +36,15 @@ public class ArquivoEpisodio extends Arquivo<Episodio> {
         return null;
     }
     
+    public ArrayList<Episodio> readFromSerie(int idSerie) throws Exception {
+        ArrayList<Episodio> lista = new ArrayList<Episodio>();
+        for (Episodio ep : listarTodos()) {
+            if (ep.getIdSerie() == idSerie) {
+                lista.add(ep);
+            }
+        }
+        return lista;
+    }
     
     @Override
     public boolean delete(int id) throws Exception {
@@ -46,6 +55,28 @@ public class ArquivoEpisodio extends Arquivo<Episodio> {
             return super.delete(id);
         }
         return false;
+    }
+
+    public boolean deleteFromSerie(int idSerie) throws Exception {
+        ArrayList<Episodio> lista = readFromSerie(idSerie);
+        int n = lista.size();
+        //System.out.printf("Numero de Eps: %d\n", n);
+        boolean result = true;
+
+        int x = 0;
+        while (x < n && result) {
+            //System.out.printf("Episodio %d sendo deletado\n", x);
+            result = delete(lista.get(x).getId());
+            //if (result) {
+            //    System.out.println("Episodio deletado");
+            //} else {
+            //    System.out.println("Episodio nao deletado");
+            //}
+
+            x++;
+        }
+
+        return result;
     }
 
     public ArrayList<Episodio> listarTodos() throws Exception {

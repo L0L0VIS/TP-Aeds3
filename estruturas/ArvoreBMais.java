@@ -286,6 +286,7 @@ public class ArvoreBMais<T extends RegistroArvoreBMais<T>> {
     // função chama a segunda recursivamente, passando a raiz como referência.
     // Eventualmente, a árvore pode crescer para cima.
     public boolean create(T elem) throws Exception {
+        //System.out.println("ArvoreBMais Create start");
 
         // Carrega a raiz
         arquivo.seek(0);
@@ -341,12 +342,15 @@ public class ArvoreBMais<T extends RegistroArvoreBMais<T>> {
             inserido = true;
         }
 
+        //System.out.println("ArvoreBMais Create end");
         return inserido;
     }
 
     // Função recursiva de inclusão. A função passa uma página de referência.
     // As inclusões são sempre feitas em uma folha.
     private boolean create1(long pagina) throws Exception {
+        //System.out.print("ArvoreBMais Create1 start");
+        //System.out.printf(" - %d \n", pagina);
 
         // Testa se passou para o filho de uma página folha. Nesse caso,
         // inicializa as variáveis globais de controle.
@@ -498,6 +502,8 @@ public class ArvoreBMais<T extends RegistroArvoreBMais<T>> {
         arquivo.seek(pagina);
         arquivo.write(pa.toByteArray());
 
+        //System.out.print("ArvoreBMais Create1 end");
+        //System.out.printf(" - %d \n", pagina);
         return true;
     }
 
@@ -506,6 +512,7 @@ public class ArvoreBMais<T extends RegistroArvoreBMais<T>> {
     // Eventualmente, a árvore pode reduzir seu tamanho, por meio da exclusão da
     // raiz.
     public boolean delete(T elem) throws Exception {
+        //System.out.println("ArvoreBMais Delete start");
 
         // Encontra a raiz da árvore
         arquivo.seek(0);
@@ -547,12 +554,15 @@ public class ArvoreBMais<T extends RegistroArvoreBMais<T>> {
             }
         }
 
+        //System.out.println("ArvoreBMais Delete end");
         return excluido;
     }
 
     // Função recursiva de exclusão. A função passa uma página de referência.
     // As exclusões são sempre feitas em folhas e a fusão é propagada para cima.
     private boolean delete1(T elem, long pagina) throws Exception {
+        //System.out.print("ArvoreBMais Delete1 start");
+        //System.out.printf(" - %d \n", pagina);
 
         // Declaração de variáveis
         boolean excluido = false;
@@ -771,6 +781,9 @@ public class ArvoreBMais<T extends RegistroArvoreBMais<T>> {
                 arquivo.write(pIrmaoDir.toByteArray());
             }
         }
+
+        //System.out.print("ArvoreBMais Delete1 end");
+        //System.out.printf(" - %d \n", pagina);
         return excluido;
     }
 

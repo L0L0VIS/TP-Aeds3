@@ -146,17 +146,22 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
     public boolean delete(int chave) {
       if (empty()) {
         //System.out.println("HashExtensivel delete: Empty file");
+
         return false;
       }
       int i = 0;
       while (i < quantidade && chave > elementos.get(i).hashCode()) {
         //System.out.println("Delete_ While(" + i + "): " + elementos.get(i).toString());
+
         i++;
       }
       if (chave == elementos.get(i).hashCode()) {
         //System.out.println("Delete_ If: " + elementos.get(i).toString());
+
         elementos.remove(i);
         quantidade--;
+
+        //System.out.println("HashExtensivel delete returning true");
         return true;
       } else
         return false;

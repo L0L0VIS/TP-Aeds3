@@ -106,6 +106,7 @@ public class Arquivo<T extends Registro> {
         ParIDEndereco pie = indiceDireto.read(id);
         if(pie!=null) {
             //System.out.println("ParIDEndereço (delete) not null");
+            
             arquivo.seek(pie.getEndereco());
             obj = construtor.newInstance();
             lapide = arquivo.readByte();
@@ -114,13 +115,20 @@ public class Arquivo<T extends Registro> {
                 b = new byte[tam];
                 arquivo.read(b);
                 obj.fromByteArray(b);
+                
                 //System.out.println(obj.toString());
+
                 if(obj.getId()==id) {
+                    //System.out.println("Tentando Delete em IndiceDireto");
                     if(indiceDireto.delete(id)) {
                         arquivo.seek(pie.getEndereco());
                         arquivo.write('*');
                         addDeleted(tam, pie.getEndereco());
+
+                        //System.out.println("Arquivo Delete returning true");
                         return true;
+                    } else {
+                        //System.out.println("Delete em IndiceDireto falhou");
                     }
                 }
             }
@@ -188,6 +196,8 @@ public class Arquivo<T extends Registro> {
 
     // adiciona um registro à lista de excluídos (espaços disponíveis para reuso)
     public void addDeleted(int tamanhoEspaco, long enderecoEspaco) throws Exception {
+        //System.out.println("Arquivo addDeleted start");
+
         long anterior = 4; // início da lista
         arquivo.seek(anterior);
         long endereco = arquivo.readLong(); // endereço do elemento que será testado
@@ -200,6 +210,9 @@ public class Arquivo<T extends Registro> {
             arquivo.writeLong(-1);
         } else {
             do {
+                //System.out.println("Arquivo _ In do while (endereco != -1)");
+                //System.out.println("Endereco atual: " + endereco);
+
                 arquivo.seek(endereco+1);
                 tamanho = arquivo.readShort();
                 proximo = arquivo.readLong();
@@ -217,13 +230,15 @@ public class Arquivo<T extends Registro> {
                     arquivo.seek(endereco+3);
                     arquivo.writeLong(enderecoEspaco);
                     arquivo.seek(enderecoEspaco+3);
-                    arquivo.writeLong(+1);
+                    arquivo.writeLong(-1);
                     break;
                 }
                 anterior = endereco;
                 endereco = proximo;
             } while (endereco!=-1);
         }
+
+        //System.out.println("Arquivo addDeleted end");
     }
     
     // retira um registro à lista de excluídos para reuso, mas com o risco de algum desperdício

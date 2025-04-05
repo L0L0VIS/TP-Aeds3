@@ -49,8 +49,11 @@ public class ArquivoSerie extends Arquivo<Serie> {
     
     public boolean delete(String nome) throws Exception {
         ParNomeID pni = indiceIndiretoNome.read(ParNomeID.hash(nome));
-        if (pni != null && delete(pni.getId())) {
-            return indiceIndiretoNome.delete(ParNomeID.hash(nome));
+        if (pni != null) {
+            //System.out.println("ArquivoSerie delete() IndiceIndireto delete call");
+            //return indiceIndiretoNome.delete(ParNomeID.hash(nome));
+            
+            return delete(pni.getId());
         }
         return false;
     }

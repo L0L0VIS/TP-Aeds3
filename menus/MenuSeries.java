@@ -1,20 +1,25 @@
 package menus;
 
 
+import arquivos.ArquivoEpisodio;
 import arquivos.ArquivoSerie;
 import entidades.Serie;
+import entidades.Episodio;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuSeries
 {
     
     ArquivoSerie arqSeries;
+    ArquivoEpisodio arqEpisodio;
     private static Scanner console = new Scanner(System.in);
 
     public MenuSeries() throws Exception 
     {
         arqSeries = new ArquivoSerie();
+        arqEpisodio = new ArquivoEpisodio();
     }
 
     public void menu() 
@@ -135,6 +140,7 @@ public class MenuSeries
     {
         System.out.println("\nBusca de Serie");
         String nome;
+        String mostrarEpisodios;
 
         System.out.print("\nNome da Serie: ");
         nome = console.nextLine();  // Lê o Nome digitado pelo usuário
@@ -148,10 +154,18 @@ public class MenuSeries
         System.out.println("Buscando " + nome);
         try 
         {
-            Serie Serie = arqSeries.read(nome);  // Chama o método de leitura da classe Arquivo
-            if (Serie != null) 
+            Serie serie = arqSeries.read(nome);  // Chama o método de leitura da classe Arquivo
+            if (serie != null) 
             {
-                mostraSerie(Serie);  // Exibe os detalhes da Série encontrada
+                mostraSerie(serie);  // Exibe os detalhes da Série encontrada
+
+                System.out.println("1) Mostrar episodios da serie");
+                System.out.println("0) Voltar ao menu");
+                System.out.print("Opcao: ");
+                mostrarEpisodios = console.nextLine();
+                if (mostrarEpisodios.charAt(0) == '1') {
+                        buscarEpisodiosSerie(serie.getId());
+                }
             } 
             else 
             {
@@ -163,7 +177,63 @@ public class MenuSeries
             System.out.println("Erro do sistema. Nao foi possível buscar a Serie!");
             e.printStackTrace();
         }
-    }   
+    }
+
+    public void buscarEpisodiosSerie(int serie_id)
+    {
+        try {
+            ArrayList<Episodio> arrayEpisodios = arqEpisodio.readFromSerie(serie_id);
+            int n = arrayEpisodios.size();
+
+            if (n == 0) {
+                System.out.println("");
+                System.out.println("Serie nao possui episodios");
+                System.out.println("");
+            } else {
+
+                Episodio [] listaEpisodio = new Episodio[n];
+                for (int x = 0; x < n; x++) {
+                    listaEpisodio[x] = arrayEpisodios.get(x);
+                }
+    
+                // Organizar array por temporada
+                boolean organizado = false;
+                while (!organizado) {
+                    organizado = true;
+                    for (int x = 0; x < n-1; x++) {
+                        if (listaEpisodio[x].getTemporada() > listaEpisodio[x+1].getTemporada()) {
+                            Episodio temp = listaEpisodio[x];
+                            listaEpisodio[x] = listaEpisodio[x+1];
+                            listaEpisodio[x+1] = temp;
+                            organizado = false;
+                        } else if (listaEpisodio[x].getTemporada() == listaEpisodio[x+1].getTemporada()) {
+                            // Organização secundária pelo número do episódio
+                            if (listaEpisodio[x].getNumero() > listaEpisodio[x+1].getNumero()) {
+                                Episodio temp = listaEpisodio[x];
+                                listaEpisodio[x] = listaEpisodio[x+1];
+                                listaEpisodio[x+1] = temp;
+                                organizado = false;
+                            }
+                        }
+                    }
+                }
+    
+                int ultimaTemporada = listaEpisodio[0].getTemporada();
+                System.out.printf("\nTemporada %d:\n", ultimaTemporada);
+                for (int x = 0; x < n; x++) {
+                    if (listaEpisodio[x].getTemporada() != ultimaTemporada) {
+                        ultimaTemporada = listaEpisodio[x].getTemporada();
+                        System.out.printf("Temporada %d:\n", ultimaTemporada);
+                    }
+                    System.out.printf("- %s\n", listaEpisodio[x].getTitulo());
+                }
+
+            } // fim do else
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void alterarSerie() 
     {
@@ -278,21 +348,35 @@ public class MenuSeries
 
         try {
             // Tenta ler o Série com o ID fornecido
-            Serie Serie = arqSeries.read(nome);
-            if (Serie != null) {
+            Serie serie = arqSeries.read(nome);
+            if (serie != null) {
                 System.out.println("Serie encontrado:");
-                mostraSerie(Serie);  // Exibe os dados do Série para confirmação
+                mostraSerie(serie);  // Exibe os dados do Série para confirmação
 
                 System.out.print("\nConfirma a exclusao do Serie? (S/N) ");
                 char resp = console.next().charAt(0);  // Lê a resposta do usuário
 
                 if (resp == 'S' || resp == 's') {
+
+                    // Tentar excluir episódios vinculados à serie
+                    boolean episodiosExcluidos = arqEpisodio.deleteFromSerie(serie.getId());
+                    if (episodiosExcluidos) {
+                        System.out.println("Episodio(s) da Serie excluído(s) com sucesso.");
+                    } else {
+                        System.out.println("Erro ao excluir o(s) episodio(s) da Serie.");
+                    }
+
+                    System.out.println("");
+
                     boolean excluido = arqSeries.delete(nome);  // Chama o método de exclusão no arquivo
                     if (excluido) {
                         System.out.println("Serie excluído com sucesso.");
                     } else {
-                        System.out.println("Erro ao excluir o Serie.");
+                        System.out.println("Erro ao excluir a Serie.");
                     }
+
+                    nome = console.nextLine(); // Para corrigir um input extra
+                    
                 } else {
                     System.out.println("Exclusao cancelada.");
                 }
@@ -311,8 +395,8 @@ public class MenuSeries
         System.out.println("\nDetalhes do Serie:");
         System.out.println("----------------------");
         System.out.printf("Nome......: %s%n",           Serie.getNome());
-        System.out.printf("Ano de lançamento: %s%n",    Serie.getAno());
         System.out.printf("Sinopse.......: %s%n",       Serie.getSinopse());
+        System.out.printf("Ano de lançamento: %s%n",    Serie.getAno());
         System.out.printf("Streaming...: %s%n",         Serie.getStreaming());
         System.out.println("----------------------");
     }

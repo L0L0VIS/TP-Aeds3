@@ -1,7 +1,6 @@
-package Entidades;
+package entidades;
 
 import java.io.*;
-import entidade.Registro;
 
 public class Episodio implements Registro {
 
